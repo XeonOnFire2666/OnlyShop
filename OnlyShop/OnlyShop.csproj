@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>33657966-a147-49fc-9423-2ae870d3988d</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OnlyShop.Adapters\OnlyShop.Adapters.csproj" />
+    <ProjectReference Include="..\OnlyShop.Application\OnlyShop.Application.csproj" />
+    <ProjectReference Include="..\OnlyShop.Core\OnlyShop.Core.csproj" />
+    <ProjectReference Include="..\OnlyShop.Infrastructure\OnlyShop.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/Adapters/">
+    <Project Path="OnlyShop.Adapters/OnlyShop.Adapters.csproj" />
+  </Folder>
+  <Folder Name="/API/">
+    <Project Path="OnlyShop/OnlyShop.csproj" />
+  </Folder>
+  <Folder Name="/Application/">
+    <Project Path="OnlyShop.Application/OnlyShop.Application.csproj" />
+  </Folder>
+  <Folder Name="/Core/">
+    <Project Path="OnlyShop.Core/OnlyShop.Core.csproj" />
+  </Folder>
+  <Folder Name="/Infrastructure/">
+    <Project Path="OnlyShop.Infrastructure/OnlyShop.Infrastructure.csproj" />
+  </Folder>
+</Solution>
