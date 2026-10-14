@@ -23,9 +23,8 @@ RUN dotnet publish "OnlyShop.csproj" -c Release -o /app/publish --no-restore
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 
-# Непривилегированный пользователь
-RUN adduser --disabled-password --gecos "" appuser
-USER appuser
+# В официальном образе aspnet уже есть непривилегированный пользователь "app" (UID 64198)
+USER app
 
 ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080
