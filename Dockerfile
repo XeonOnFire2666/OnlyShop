@@ -13,17 +13,16 @@ COPY ["OnlyShop.Infrastructure/OnlyShop.Infrastructure.csproj", "OnlyShop.Infras
 
 RUN dotnet restore "OnlyShop/OnlyShop.csproj"
 
-# Копируем весь остальной код
 COPY . .
 
 WORKDIR /src/OnlyShop
-RUN dotnet publish "OnlyShop.csproj" -c Release -o /app/publish --no-restore
+# Без --no-restore: publish сам пересобирает граф зависимостей с учётом всех файлов
+RUN dotnet publish "OnlyShop.csproj" -c Release -o /app/publish
 
 # ---------- Runtime stage ----------
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 
-# В официальном образе aspnet уже есть непривилегированный пользователь "app" (UID 64198)
 USER app
 
 ENV ASPNETCORE_URLS=http://+:8080
