@@ -13,10 +13,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.13">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\OnlyShop.Adapters\OnlyShop.Adapters.csproj" />
     <ProjectReference Include="..\OnlyShop.Application\OnlyShop.Application.csproj" />
     <ProjectReference Include="..\OnlyShop.Core\OnlyShop.Core.csproj" />
     <ProjectReference Include="..\OnlyShop.Infrastructure\OnlyShop.Infrastructure.csproj" />
   </ItemGroup>
+
+	<PropertyGroup>
+		<InterceptorsNamespaces>$(InterceptorsNamespaces);Microsoft.AspNetCore.OpenApi.Generated</InterceptorsNamespaces>
+	</PropertyGroup>
 
 </Project>
