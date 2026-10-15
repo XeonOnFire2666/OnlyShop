@@ -5,6 +5,7 @@ using OnlyShop.Application;
 using OnlyShop.Infrastructure;
 using OnlyShop.Infrastructure.Jwt;
 using OnlyShop.Infrastructure.Persistence;
+using OnlyShop.Adapters.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseUrls("http://0.0.0.0:5201");
@@ -48,17 +49,18 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "An error occurred while migrating the database.");
     }
 }
-
-app.MapOpenApi();
-app.UseRouting();
-app.UseCors();
-app.UseAuthentication();
-app.UseAuthorization();
-
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
+app.UseRouting();
+app.UseCors();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapOpenApi();
 app.MapControllers();
+
 app.MapFallbackToFile("index.html");
 
 app.Run();

@@ -1,7 +1,7 @@
 window.App = window.App || {};
 
 window.APP_CONFIG = {
-  apiBase: '',
+    apiBase: 'https://onlyshop-rjf2.onrender.com',
   photoBase: '/media/',
   managerUsername: 'sneakersland_manager',
   usdRate: 3.2,
