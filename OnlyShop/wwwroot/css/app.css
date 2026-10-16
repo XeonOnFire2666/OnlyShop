@@ -247,13 +247,13 @@ p {
 .page-title .eyebrow {
     font-family: var(--font-serif);
     font-style: normal;
-    font-weight: 700;
+    font-weight: 900;         
     letter-spacing: 0.005em;
     text-transform: none;
 }
 
 .page-title .eyebrow {
-    font-weight: 600;
+    font-weight: 800;          
     font-size: 14px;
     letter-spacing: 0.04em;
 }
