@@ -26,14 +26,30 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         setUnauthorizedHandler(logout);
-        const stored = localStorage.getItem("onlyshop_staff");
-        if (stored) {
-            try {
-                setStaff(JSON.parse(stored));
-            } catch {
+
+        const token = localStorage.getItem("onlyshop_token");
+        const storedStaff = localStorage.getItem("onlyshop_staff");
+
+        if (token && storedStaff) {
+            const payload = decodeJwt(token);
+            const notExpired = payload?.exp ? payload.exp * 1000 > Date.now() : true;
+
+            if (notExpired) {
+                try {
+                    setStaff(JSON.parse(storedStaff));
+                } catch {
+                    localStorage.removeItem("onlyshop_staff");
+                    localStorage.removeItem("onlyshop_token");
+                }
+            } else {
                 localStorage.removeItem("onlyshop_staff");
+                localStorage.removeItem("onlyshop_token");
             }
+        } else {
+            localStorage.removeItem("onlyshop_staff");
+            localStorage.removeItem("onlyshop_token");
         }
+
         setIsReady(true);
     }, [logout]);
 
