@@ -7,156 +7,100 @@
 
     const TAB_ORDER = ['catalog', 'favorites', 'basket', 'profile'];
 
-    function TabsPager() {
+    function useTabSwipe() {
         const { nav } = useApp();
-        const idx = Math.max(0, TAB_ORDER.indexOf(nav.tab));
-
-        const containerRef = useRef(null);
-        const trackRef = useRef(null);
         const navRef = useRef(nav);
         useEffect(() => { navRef.current = nav; });
 
-        const drag = useRef({
-            active: false,
-            startX: 0, startY: 0,
-            isTouch: false, lastTouchAt: 0,
-            decided: null, currentDx: 0,
-            containerWidth: 0, startTime: 0
-        });
-        const lockUntil = useRef(0);
-
-        const setTrackX = useCallback((dx, animate) => {
-            const track = trackRef.current;
-            const w = drag.current.containerWidth || (containerRef.current ? containerRef.current.offsetWidth : 0);
-            if (!track || !w) return;
-            track.style.transition = animate
-                ? 'transform 0.34s cubic-bezier(0.34, 1.35, 0.64, 1)'
-                : 'none';
-            track.style.transform = `translate3d(${-w + dx}px, 0, 0)`;
-        }, []);
-
-        const resetTrack = useCallback(() => {
-            const track = trackRef.current;
-            const el = containerRef.current;
-            if (!track || !el) return;
-            const w = el.offsetWidth;
-            drag.current.containerWidth = w;
-            track.style.transition = 'none';
-            track.style.transform = `translate3d(${-w}px, 0, 0)`;
-        }, []);
-
-        React.useLayoutEffect(() => { resetTrack(); }, [nav.tab, resetTrack]);
-
         useEffect(() => {
-            const onResize = () => resetTrack();
-            window.addEventListener('resize', onResize);
-            return () => window.removeEventListener('resize', onResize);
-        }, [resetTrack]);
+            const BLOCKERS = '.chips, .gallery, .segment, .options, .modal, .product-sheet, input, textarea, select, [data-no-swipe]';
+            const isBlocked = (el) => !!el && !!el.closest && !!el.closest(BLOCKERS);
 
-        useEffect(() => {
-            const el = containerRef.current;
-            if (!el) return;
-
-            const BLOCKERS = '.chips, .gallery, .segment, .options, input, textarea, select, [data-no-swipe]';
-            const blocked = (t) => !!(t && t.closest && t.closest(BLOCKERS));
+            let start = null;                   
+            let lockUntil = 0;                 
+            let lastTouchAt = 0;              
 
             const onStart = (e, isTouch) => {
                 const now = Date.now();
-                const d = drag.current;
-                if (isTouch) d.lastTouchAt = now;
-                else if (now - d.lastTouchAt < 500) return;
-                if (now < lockUntil.current) return;
+                if (isTouch) lastTouchAt = now;
+                else if (now - lastTouchAt < 500) { start = null; return; }
+                if (now < lockUntil) { start = null; return; }
+
                 const n = navRef.current;
-                if (!n || n.productId) return;
-                if (blocked(e.target)) return;
+                if (!n || n.productId) { start = null; return; }
+                if (isBlocked(e.target)) { start = null; return; }
 
                 const pt = e.touches ? e.touches[0] : e;
-                d.active = true;
-                d.startX = pt.clientX;
-                d.startY = pt.clientY;
-                d.isTouch = isTouch;
-                d.decided = null;
-                d.currentDx = 0;
-                d.startTime = now;
-                d.containerWidth = el.offsetWidth;
+                start = {
+                    x: pt.clientX,
+                    y: pt.clientY,
+                    t: now,
+                    isTouch,
+                    tabAtStart: n.tab
+                };
             };
 
             const onMove = (e) => {
-                const d = drag.current;
-                if (!d.active) return;
+                if (!start) return;
                 const pt = e.touches ? e.touches[0] : e;
-                const dx = pt.clientX - d.startX;
-                const dy = pt.clientY - d.startY;
-
-                if (!d.decided) {
-                    if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
-                        if (Math.abs(dy) > Math.abs(dx)) { d.active = false; return; }
-                        d.decided = 'h';
-                    } else return;
-                }
-
-                if (e.cancelable) e.preventDefault();
-
-                let offset = dx;
-                if ((idx === 0 && dx > 0) || (idx === TAB_ORDER.length - 1 && dx < 0)) {
-                    offset = dx * 0.28;
-                }
-                d.currentDx = offset;
-                setTrackX(offset, false);
+                const dx = pt.clientX - start.x;
+                const dy = pt.clientY - start.y;
+                if (Math.abs(dy) > 24 && Math.abs(dy) > Math.abs(dx) * 1.2) start = null;
             };
 
-            const onEnd = () => {
-                const d = drag.current;
-                if (!d.active) return;
-                d.active = false;
+            const onEnd = (e) => {
+                const s = start;
+                start = null;
+                if (!s) return;
 
-                const w = d.containerWidth || el.offsetWidth;
-                const threshold = Math.min(w * 0.25, 100);
-                const dt = Math.max(1, Date.now() - d.startTime);
-                const velocity = d.currentDx / dt;
-                const dx = d.currentDx;
+                const now = Date.now();
+                if (now < lockUntil) return;
+                if (!s.isTouch && now - lastTouchAt < 500) return;
+
+                const n = navRef.current;
+                if (!n || n.productId) return;
+                if (n.tab !== s.tabAtStart) return;
+
+                const pt = e.changedTouches ? e.changedTouches[0] : e;
+                const dx = pt.clientX - s.x;
+                const dy = pt.clientY - s.y;
+                const dt = now - s.t;
+
+                if (dt > 700) return;                               
+                if (Math.abs(dx) < 70) return;                      
+                if (Math.abs(dx) < Math.abs(dy) * 1.5) return;      
+
+                const idx = TAB_ORDER.indexOf(n.tab);
+                if (idx < 0) return;
 
                 let nextIdx = idx;
-                if ((dx < -threshold || (velocity < -0.55 && dx < -30)) && idx < TAB_ORDER.length - 1) nextIdx = idx + 1;
-                else if ((dx > threshold || (velocity > 0.55 && dx > 30)) && idx > 0) nextIdx = idx - 1;
+                if (dx < 0 && idx < TAB_ORDER.length - 1) nextIdx = idx + 1;    
+                else if (dx > 0 && idx > 0) nextIdx = idx - 1;                  
+                if (nextIdx === idx) return;                                    
 
-                if (nextIdx === idx) {
-                    setTrackX(0, true);
-                    return;
-                }
-
-                const targetX = dx < 0 ? -w : w;
-                lockUntil.current = Date.now() + 460;
-                setTrackX(targetX, true);
-
-                setTimeout(() => {
-                    const n = navRef.current;
-                    if (n) n.setTab(TAB_ORDER[nextIdx]);
-                }, 340);
+                lockUntil = now + 400;            
+                n.setTab(TAB_ORDER[nextIdx]);
             };
 
-            const onCancel = () => {
-                const d = drag.current;
-                if (!d.active) return;
-                d.active = false;
-                setTrackX(0, true);
-            };
+            const onCancel = () => { start = null; };
 
             const ts = (e) => onStart(e, true);
             const tm = (e) => onMove(e);
-            const te = () => onEnd();
+            const te = (e) => onEnd(e);
             const tc = () => onCancel();
+
             const ms = (e) => onStart(e, false);
             const mm = (e) => onMove(e);
-            const mu = () => onEnd();
+            const mu = (e) => onEnd(e);
 
             document.addEventListener('touchstart', ts, { passive: true });
-            document.addEventListener('touchmove', tm, { passive: false });
+            document.addEventListener('touchmove', tm, { passive: true });
             document.addEventListener('touchend', te, { passive: true });
             document.addEventListener('touchcancel', tc, { passive: true });
             document.addEventListener('mousedown', ms);
             document.addEventListener('mousemove', mm);
             document.addEventListener('mouseup', mu);
+
             return () => {
                 document.removeEventListener('touchstart', ts);
                 document.removeEventListener('touchmove', tm);
@@ -166,32 +110,7 @@
                 document.removeEventListener('mousemove', mm);
                 document.removeEventListener('mouseup', mu);
             };
-        }, [idx, setTrackX]);
-
-        const prevTab = idx > 0 ? TAB_ORDER[idx - 1] : null;
-        const nextTab = idx < TAB_ORDER.length - 1 ? TAB_ORDER[idx + 1] : null;
-
-        const A = window.App;
-        const map = {
-            catalog: A.CatalogPage,
-            favorites: A.FavoritesPage,
-            basket: A.BasketPage,
-            profile: A.ProfilePage
-        };
-        const renderTab = (id) => {
-            if (!id) return null;
-            const C = map[id];
-            return C ? html`<${C} />` : null;
-        };
-
-        return html`
-        <div ref=${containerRef} className="tabs-pager">
-            <div ref=${trackRef} className="tabs-track">
-                <div className="tabs-slot">${renderTab(prevTab)}</div>
-                <div className="tabs-slot">${renderTab(nav.tab)}</div>
-                <div className="tabs-slot">${renderTab(nextTab)}</div>
-            </div>
-        </div>`;
+        }, []);
     }
 
     const STATUS_LABELS = {
@@ -213,6 +132,7 @@
     };
 
     function CatalogPage() {
+        useTabSwipe();
         const { categories, categoryId, setCategoryId, remember, nav } = useApp();
         const [query, setQuery] = useState('');
         const [debounced, setDebounced] = useState('');
@@ -419,6 +339,7 @@
     }
 
     function FavoritesPage() {
+        useTabSwipe();
         const { favIds, getProduct, nav } = useApp();
         const [items, setItems] = useState([]);
         const [loading, setLoading] = useState(true);
@@ -472,6 +393,7 @@
     }
 
     function BasketPage() {
+        useTabSwipe();
         const { basket, basketTotals, currency, user, checkout, nav, toast } = useApp();
         const [form, setForm] = useState({
             name: '',
@@ -644,6 +566,7 @@
     }
 
     function ProfilePage() {
+        useTabSwipe();
         const { orders, nav, user, favIds } = useApp();
         const [sheet, setSheet] = useState(null);
         const last = orders[0];
@@ -678,5 +601,5 @@
     </section>`;
     }
 
-    Object.assign(window.App, { TabsPager, CatalogPage, FavoritesPage, BasketPage, ProfilePage, ProductSheet });
+    Object.assign(window.App, { CatalogPage, FavoritesPage, BasketPage, ProfilePage, ProductSheet });
 })();

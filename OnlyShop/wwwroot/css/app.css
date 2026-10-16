@@ -1519,9 +1519,9 @@ p {
     overflow: hidden;
 }
 
-    .tabs-slot:empty {
-        min-height: 1px;
-    }
+.tabs-slot:empty {
+    min-height: 1px;
+}
 
 :focus-visible {
     outline: 2px solid var(--brand);
