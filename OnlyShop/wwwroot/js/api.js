@@ -7,12 +7,15 @@
     async function request(method, path, body) {
         if (useMock) return window.App.mockRequest(method, path, body);
 
-        const url = (cfg.apiBase || '') + '/api' + path;
+        // cache-buster: уникальный параметр в каждом запросе, чтобы обойти дисковый кэш
+        const sep = path.includes('?') ? '&' : '?';
+        const url = (cfg.apiBase || '') + '/api' + path + sep + '_t=' + Date.now();
 
         let res;
         try {
             res = await fetch(url, {
                 method,
+                cache: 'no-store', // <-- fix: игнорируем HTTP-кэш
                 headers: {
                     'Content-Type': 'application/json',
                     Accept: 'application/json',

@@ -48,7 +48,6 @@ public static class DependencyInjection
         services.AddProblemDetails();
         services.ConfigureHttpJsonOptions(o => o.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
-        // --- Authentication: JWT для staff/admin, Telegram initData для клиентов ---
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = SmartScheme;
@@ -56,8 +55,6 @@ public static class DependencyInjection
         })
         .AddPolicyScheme(SmartScheme, SmartScheme, options =>
         {
-            // Если заголовок начинается с "tma " — идём в Telegram-схему,
-            // иначе — в JWT (staff/admin).
             options.ForwardDefaultSelector = context =>
             {
                 var auth = context.Request.Headers.Authorization.ToString();
