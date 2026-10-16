@@ -1,10 +1,12 @@
-﻿using System.Security.Claims;
-using System.Text.Encodings.Web;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using OnlyShop.Adapters.Common;
 using OnlyShop.Application.Abstractions.Services;
 using OnlyShop.Application.Common.Exceptions;
+using OnlyShop.Core.Enums; // <-- добавлено для Roles
+using System.Security.Claims;
+using System.Text.Encodings.Web;
 
 namespace OnlyShop.Adapters.Telegram;
 
@@ -37,7 +39,8 @@ internal sealed class TelegramInitDataAuthenticationHandler(
             [
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim("telegram_id", user.TelegramId.ToString()),
-                new Claim(ClaimTypes.Name, user.Name)
+                new Claim(ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.Role, Roles.Customer) // <-- добавлено
             ], Scheme);
 
             var ticket = new AuthenticationTicket(new ClaimsPrincipal(identity), Scheme);
