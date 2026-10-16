@@ -1,0 +1,224 @@
+﻿.orders-filters {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 0.7rem;
+    padding: 0.9rem;
+    margin-bottom: 1.3rem;
+}
+
+@media (max-width: 720px) {
+    .orders-filters {
+        grid-template-columns: 1fr;
+    }
+}
+
+.orders-table {
+    overflow: hidden;
+}
+
+.orders-table__head,
+.orders-table__row {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr 32px;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.75rem 1.1rem;
+}
+
+.orders-table__head {
+    background: var(--ink-800);
+    color: var(--text-faint);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--line);
+}
+
+.orders-table__body {
+    display: flex;
+    flex-direction: column;
+}
+
+.orders-table__row {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s ease;
+}
+
+    .orders-table__row:last-child {
+        border-bottom: none;
+    }
+
+    .orders-table__row:hover {
+        background: var(--ink-600);
+    }
+
+.orders-table__cell {
+    font-size: 0.875rem;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+}
+
+.orders-table__cell--strong {
+    font-weight: 600;
+}
+
+.orders-table__cell--mono {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+}
+
+.orders-table__cell--muted {
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+}
+
+.orders-table__cell--arrow {
+    color: var(--text-faint);
+    font-size: 1rem;
+    justify-content: flex-end;
+}
+
+.orders-table__sub {
+    font-size: 0.75rem;
+    color: var(--text-faint);
+    font-weight: 400;
+}
+
+@media (max-width: 720px) {
+    .orders-table__head {
+        display: none;
+    }
+
+    .orders-table__row {
+        grid-template-columns: 1fr auto;
+        grid-auto-rows: auto;
+        row-gap: 0.4rem;
+    }
+
+    .orders-table__cell:nth-child(3),
+    .orders-table__cell:nth-child(4),
+    .orders-table__cell--arrow {
+        display: none;
+    }
+}
+
+.odetail {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.odetail__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.9rem;
+}
+
+@media (max-width: 560px) {
+    .odetail__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.odetail__label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-faint);
+    margin-bottom: 0.25rem;
+}
+
+.odetail__value {
+    font-size: 0.875rem;
+}
+
+.odetail__comment p {
+    margin-top: 0.4rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    background: var(--ink-600);
+    padding: 0.6rem 0.8rem;
+    border-radius: var(--radius-sm);
+}
+
+.odetail__items h4 {
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+
+.odetail__items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 0.75rem;
+    background: var(--ink-800);
+}
+
+.odetail__item {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 0.75rem;
+    align-items: center;
+    font-size: 0.8125rem;
+}
+
+.odetail__item-name small {
+    color: var(--text-faint);
+}
+
+.odetail__item-qty {
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+}
+
+.odetail__item-price {
+    font-family: var(--font-mono);
+    color: var(--text-secondary);
+}
+
+.odetail__total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.6rem;
+    padding-top: 0.6rem;
+    border-top: 1px dashed var(--line-strong);
+    font-weight: 600;
+    font-size: 0.9375rem;
+}
+
+.odetail__bonuses {
+    margin-top: 0.35rem;
+    font-size: 0.75rem;
+    color: var(--warning);
+}
+
+.odetail__actions {
+    border-top: 1px solid var(--line);
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.odetail__buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}

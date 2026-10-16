@@ -7,7 +7,6 @@ using Telegram.Bot;
 
 namespace OnlyShop.Infrastructure.Telegram;
 
-// Требует пакет Telegram.Bot
 public class TelegramOrderNotifier(ITelegramBotClient bot) : IOrderNotifier
 {
     public async Task NotifyManagersAboutNewOrderAsync(

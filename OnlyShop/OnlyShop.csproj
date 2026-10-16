@@ -9,6 +9,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="AdminApp\index.html" />
+    <Content Include="ClientApp\css\app.css" />
+    <Content Include="ClientApp\js\api.js" />
+    <Content Include="ClientApp\js\app.js" />
+    <Content Include="ClientApp\js\components.js" />
+    <Content Include="ClientApp\js\config.js" />
+    <Content Include="ClientApp\js\mock.js" />
+    <Content Include="ClientApp\js\pages.js" />
+    <Content Include="ClientApp\js\store.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.13">
       <PrivateAssets>all</PrivateAssets>
@@ -21,6 +33,11 @@
     <ProjectReference Include="..\OnlyShop.Application\OnlyShop.Application.csproj" />
     <ProjectReference Include="..\OnlyShop.Core\OnlyShop.Core.csproj" />
     <ProjectReference Include="..\OnlyShop.Infrastructure\OnlyShop.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="AdminApp\src\auth\" />
+    <Folder Include="wwwroot\admin\" />
   </ItemGroup>
 
 	<PropertyGroup>

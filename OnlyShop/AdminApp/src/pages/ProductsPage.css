@@ -1,0 +1,208 @@
+﻿.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.pform {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+}
+
+.pform__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+@media (max-width: 560px) {
+    .pform__row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.pform__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    margin-top: 0.4rem;
+}
+
+.pform__inline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    background: var(--ink-600);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+}
+
+.pform__hint {
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+}
+
+.pform__error {
+    background: var(--danger-tint);
+    border: 1px solid rgba(227, 93, 106, 0.35);
+    color: var(--danger);
+    padding: 0.55rem 0.75rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.8125rem;
+}
+
+.pform__variants {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.pform__variant-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.pform__variant {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--ink-600);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.45rem 0.7rem;
+    font-size: 0.875rem;
+}
+
+.pform__variant-size {
+    font-weight: 600;
+    min-width: 40px;
+}
+
+.pform__variant-stock {
+    color: var(--text-secondary);
+    flex: 1;
+    font-size: 0.8125rem;
+}
+
+.pform__variant-remove {
+    background: transparent;
+    border: none;
+    color: var(--text-faint);
+    cursor: pointer;
+    padding: 0.25rem 0.4rem;
+    border-radius: 6px;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+    .pform__variant-remove:hover {
+        color: var(--danger);
+        background: var(--danger-tint);
+    }
+
+.pform__variant-add {
+    display: grid;
+    grid-template-columns: 1fr 110px auto;
+    gap: 0.5rem;
+}
+
+@media (max-width: 560px) {
+    .pform__variant-add {
+        grid-template-columns: 1fr;
+    }
+}
+
+.pdetail {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.pdetail__tabs {
+    display: flex;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    background: var(--ink-800);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+}
+
+.pdetail__tab {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+    .pdetail__tab:hover {
+        color: var(--text-primary);
+        background: var(--ink-700);
+    }
+
+.pdetail__tab--active {
+    background: var(--primary-tint);
+    color: #c4c6f7;
+}
+
+.pdetail__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--line);
+    flex-wrap: wrap;
+}
+
+.pdetail__status {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.pdetail__updated {
+    font-size: 0.75rem;
+    color: var(--text-faint);
+}
+
+.pdetail__actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.pform__photos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 0.6rem;
+}
+
+.pform__photo {
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: var(--ink-600);
+    outline: 1px solid oklch(1 0 0 / 0.1);
+    outline-offset: -1px;
+}
+
+    .pform__photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }

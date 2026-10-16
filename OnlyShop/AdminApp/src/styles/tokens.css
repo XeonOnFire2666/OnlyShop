@@ -1,0 +1,33 @@
+﻿:root {
+    --ink-900: #090a14;
+    --ink-800: #0e0f1e;
+    --ink-700: #14152a;
+    --ink-600: #1b1d38;
+    --ink-500: #272a4d;
+    --line: rgba(149, 152, 184, 0.16);
+    --line-strong: rgba(149, 152, 184, 0.3);
+    --primary: #393ca7;
+    --primary-bright: #5558d6;
+    --primary-dim: #2b2d80;
+    --primary-tint: rgba(85, 88, 214, 0.16);
+    --text-primary: #f3f3f9;
+    --text-secondary: #9598b8;
+    --text-faint: #686b94;
+    --success: #35c98f;
+    --success-tint: rgba(53, 201, 143, 0.14);
+    --danger: #e35d6a;
+    --danger-tint: rgba(227, 93, 106, 0.14);
+    --warning: #e3a85d;
+    --warning-tint: rgba(227, 168, 93, 0.14);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --radius-pill: 999px;
+    --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(5, 6, 16, 0.4);
+    --shadow-lift: 0 4px 10px rgba(0, 0, 0, 0.35), 0 16px 40px rgba(5, 6, 16, 0.5);
+    --font-ui: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+    --glass-bg: linear-gradient(135deg, rgba(85, 88, 214, 0.22), rgba(85, 88, 214, 0.06));
+    --glass-border: rgba(255, 255, 255, 0.14);
+    --glass-highlight: rgba(255, 255, 255, 0.5);
+}

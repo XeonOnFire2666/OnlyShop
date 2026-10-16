@@ -1,0 +1,17 @@
+﻿.product-filters {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    gap: 0.7rem;
+    padding: 0.9rem;
+    margin-bottom: 1.3rem;
+}
+
+.product-filters__search {
+    background: var(--ink-800);
+}
+
+@media (max-width: 880px) {
+    .product-filters {
+        grid-template-columns: 1fr;
+    }
+}

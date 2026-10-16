@@ -1,0 +1,52 @@
+﻿.staff-list {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.staff-row {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.85rem 1.1rem;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.15s ease;
+}
+
+    .staff-row:last-child {
+        border-bottom: none;
+    }
+
+    .staff-row:hover {
+        background: var(--ink-600);
+    }
+
+.staff-row__main {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.staff-row__name {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.staff-row__email {
+    font-size: 0.78125rem;
+    color: var(--text-faint);
+    font-family: var(--font-mono);
+}
+
+@media (max-width: 640px) {
+    .staff-row {
+        grid-template-columns: 1fr auto;
+        row-gap: 0.5rem;
+    }
+
+    .staff-row__actions {
+        grid-column: 1 / -1;
+        justify-content: flex-end;
+    }
+}

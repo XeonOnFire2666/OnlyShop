@@ -1,0 +1,97 @@
+﻿.login {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+    .login::before {
+        content: "";
+        position: absolute;
+        width: 640px;
+        height: 640px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(85, 88, 214, 0.35), transparent 65%);
+        top: -220px;
+        left: -160px;
+        filter: blur(10px);
+    }
+
+    .login::after {
+        content: "";
+        position: absolute;
+        width: 520px;
+        height: 520px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(57, 60, 167, 0.3), transparent 65%);
+        bottom: -220px;
+        right: -140px;
+        filter: blur(10px);
+    }
+
+.login__card {
+    width: 100%;
+    max-width: 400px;
+    padding: 2.2rem 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.login__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 1.6rem;
+}
+
+.login__brand-mark {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    background: linear-gradient(135deg, var(--primary-bright), var(--primary-dim));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.login h1 {
+    font-size: 1.4rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+}
+
+.login__subtitle {
+    margin-top: 0.4rem;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: 1.8rem;
+}
+
+.login__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.login__submit {
+    width: 100%;
+    margin-top: 0.4rem;
+}
+
+.login__error {
+    background: var(--danger-tint);
+    border: 1px solid rgba(227, 93, 106, 0.35);
+    color: var(--danger);
+    padding: 0.6rem 0.8rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.8125rem;
+}

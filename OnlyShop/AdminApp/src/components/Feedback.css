@@ -1,0 +1,66 @@
+﻿.confirm__message {
+    color: var(--text-secondary);
+    line-height: 1.55;
+    font-size: 0.9rem;
+}
+
+.confirm__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    margin-top: 1.4rem;
+}
+
+.spinner-block {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    padding: 2rem;
+    justify-content: center;
+}
+
+.spinner-block__dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--line-strong);
+    border-top-color: var(--primary-bright);
+    animation: btn-spin 0.7s linear infinite;
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem;
+    padding: 3.5rem 1.5rem;
+    color: var(--text-secondary);
+}
+
+.empty-state__icon {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-md);
+    background: var(--ink-600);
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: var(--text-faint);
+    margin-bottom: 0.4rem;
+}
+
+.empty-state h3 {
+    font-size: 1rem;
+    color: var(--text-primary);
+}
+
+.empty-state p {
+    font-size: 0.875rem;
+    max-width: 320px;
+    line-height: 1.5;
+}

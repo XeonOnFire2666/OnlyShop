@@ -1,11 +1,9 @@
-using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
 using OnlyShop.Adapters;
 using OnlyShop.Application;
 using OnlyShop.Infrastructure;
 using OnlyShop.Infrastructure.Jwt;
 using OnlyShop.Infrastructure.Persistence;
-using OnlyShop.Adapters.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseUrls("http://0.0.0.0:5201");
@@ -75,6 +73,8 @@ app.MapControllers();
 
 app.MapAdapters();
 
-app.MapFallbackToFile("index.html");
+app.MapFallbackToFile("/admin/{**path}", "admin/index.html");
+
+app.MapFallbackToFile("/{**path}", "index.html");
 
 app.Run();
