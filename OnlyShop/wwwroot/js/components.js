@@ -40,23 +40,6 @@
     </svg>`;
     }
 
-    function Logo() {
-        return html`<div className="logo">
-      <svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true">
-        <circle cx="20" cy="20" r="20" fill="#ff5a1f" />
-        <text
-          x="20"
-          y="26"
-          textAnchor="middle"
-          fontFamily="Arial Black, Impact, sans-serif"
-          fontSize="16"
-          fontWeight="900"
-          fill="#fff"
-        >SL</text>
-      </svg>
-    </div>`;
-    }
-
     function Header() {
         const { nav } = useApp();
         const [open, setOpen] = useState(false);
@@ -64,8 +47,20 @@
       <header className="header">
         <button className="icon-btn" aria-label="Категории" onClick=${() => setOpen(true)}><${Icon} name="menu" size=${26} /></button>
         <div className="brand">
-          <${Logo} />
-          <div className="wordmark">Sneakers<br />Land BY</div>
+          <div
+            className="wordmark"
+            style=${{
+                fontFamily: '"Arial Black", Impact, "Haettenschweiler", sans-serif',
+                fontWeight: 900,
+                fontSize: '20px',
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                transform: 'scaleX(1.25)',
+                transformOrigin: 'center',
+                display: 'inline-block',
+                whiteSpace: 'nowrap'
+            }}
+          >ONLYSHOP</div>
         </div>
         <button className="icon-btn" aria-label="Поиск" onClick=${nav.focusSearch}><${Icon} name="search" size=${26} /></button>
       </header>

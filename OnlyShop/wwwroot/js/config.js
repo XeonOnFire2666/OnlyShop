@@ -3,10 +3,10 @@ window.App = window.App || {};
 window.APP_CONFIG = {
     apiBase: 'https://onlyshop-rjf2.onrender.com',
   photoBase: '/media/',
-  managerUsername: 'sneakersland_manager',
+  managerUsername: 'aarabica666',
   usdRate: 3.2,
   mock: false,
-  shopAddress: 'Притыцкого 29, Тивали, гал. №101',
+    shopAddress: 'Пресненская наб., 2, Москва',
   deliveryMethods: [
     { id: 'Courier', label: 'Курьер', wait: '1–3 дня', needsAddress: true },
     { id: 'Pickup', label: 'Самовывоз', wait: 'по договорённости', needsAddress: false }
@@ -17,7 +17,7 @@ window.APP_CONFIG = {
   ],
   deliveryInfo: [
     'Доставка по Беларуси — 1–3 дня после подтверждения заказа.',
-    'Самовывоз из магазина: Притыцкого 29, Тивали, гал. №101.',
+    'Самовывоз из магазина: Пресненская наб., 2, Москва',
     'Менеджер свяжется с вами в Telegram после оформления.'
   ]
 };
