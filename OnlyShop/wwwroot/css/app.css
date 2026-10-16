@@ -1497,6 +1497,32 @@ p {
     line-height: 1.5;
 }
 
+.tabs-pager {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    touch-action: pan-y;
+}
+
+.tabs-track {
+    display: flex;
+    width: 300%;
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: translate3d(-33.3333%, 0, 0);
+}
+
+.tabs-slot {
+    flex: 0 0 33.3333%;
+    width: 33.3333%;
+    min-width: 0;
+    overflow: hidden;
+}
+
+    .tabs-slot:empty {
+        min-height: 1px;
+    }
+
 :focus-visible {
     outline: 2px solid var(--brand);
     outline-offset: 2px;
