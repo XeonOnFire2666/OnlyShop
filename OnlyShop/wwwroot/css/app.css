@@ -3,7 +3,7 @@
     --ink: #111111;
     --muted: #8d8780;
     --line: rgba(17, 17, 17, 0.09);
-    --brand: #302FA6;
+    --brand: #393CA7;
     --brand-deep: #201F7A;
     --radius: 22px;
     --safe-top: max(env(safe-area-inset-top, 0px), calc(var(--tg-safe-area-inset-top, 0px) + var(--tg-content-safe-area-inset-top, 0px)));
@@ -11,6 +11,7 @@
     --font-display: 'Oswald', 'Arial Narrow', sans-serif;
     --font-text: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
     --font-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+    --font-wordmark: 'Special Gothic Expanded One', 'Arial Narrow', sans-serif;
     --spring: cubic-bezier(0.34, 1.35, 0.64, 1);
 }
 
@@ -45,7 +46,7 @@ body {
         inset: -20% -20% auto -20%;
         height: 90vh;
         z-index: -1;
-        background: radial-gradient(40% 40% at 20% 30%, rgba(48, 47, 166, 0.2), transparent 70%), radial-gradient(34% 34% at 85% 18%, rgba(139, 137, 216, 0.28), transparent 70%), radial-gradient(40% 40% at 60% 80%, rgba(48, 47, 166, 0.1), transparent 70%);
+        background: radial-gradient(40% 40% at 20% 30%, rgba(57, 60, 167, 0.2), transparent 70%), radial-gradient(34% 34% at 85% 18%, rgba(139, 137, 216, 0.28), transparent 70%), radial-gradient(40% 40% at 60% 80%, rgba(57, 60, 167, 0.1), transparent 70%);
         pointer-events: none;
     }
 
@@ -134,7 +135,7 @@ p {
 
 .glass-brand {
     background: linear-gradient(160deg, #6a68c9 0%, var(--brand) 45%, var(--brand-deep) 100%);
-    box-shadow: inset 0 2px 1px rgba(255, 255, 255, 0.55), inset 0 -3px 6px rgba(20, 20, 90, 0.35), 0 14px 30px rgba(48, 47, 166, 0.38);
+    box-shadow: inset 0 2px 1px rgba(255, 255, 255, 0.55), inset 0 -3px 6px rgba(20, 20, 90, 0.35), 0 14px 30px rgba(57, 60, 167, 0.38);
 }
 
     .glass-brand::before {
@@ -192,7 +193,7 @@ p {
     display: grid;
     place-items: center;
     background: var(--brand);
-    box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.5), 0 8px 18px rgba(48, 47, 166, 0.4);
+    box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.5), 0 8px 18px rgba(57, 60, 167, 0.4);
     overflow: hidden;
     color: #fff;
     font-family: var(--font-display);
@@ -207,12 +208,12 @@ p {
     }
 
 .wordmark {
-    font-family: var(--font-display);
-    font-weight: 700;
+    font-family: var(--font-wordmark);
+    font-weight: 400;
     font-size: 22px;
     line-height: 0.95;
     text-transform: uppercase;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.02em;
 }
 
 .page {
@@ -242,6 +243,8 @@ p {
     letter-spacing: 0.01em;
 }
 
+/* ── Source Serif 4 — для вкладок «Избранное», «Корзина», «Профиль»
+   (заголовок h1 + англ. подпись eyebrow внутри PageTitle) ── */
 .page-title h1,
 .page-title .eyebrow {
     font-family: var(--font-serif);
@@ -560,7 +563,7 @@ p {
     height: 28px;
     margin: 24px auto;
     border-radius: 50%;
-    border: 3px solid rgba(48, 47, 166, 0.2);
+    border: 3px solid rgba(57, 60, 167, 0.2);
     border-top-color: var(--brand);
     animation: spin 0.8s linear infinite;
 }
@@ -665,9 +668,9 @@ p {
     left: 6px;
     width: calc((100% - 12px) / 4);
     border-radius: 32px;
-    background: linear-gradient(160deg, rgba(106, 104, 201, 0.28), rgba(48, 47, 166, 0.14));
-    border: 1px solid rgba(48, 47, 166, 0.28);
-    box-shadow: inset 0 1.5px 1px rgba(255, 255, 255, 0.8), 0 4px 14px rgba(48, 47, 166, 0.2);
+    background: linear-gradient(160deg, rgba(106, 104, 201, 0.28), rgba(57, 60, 167, 0.14));
+    border: 1px solid rgba(57, 60, 167, 0.28);
+    box-shadow: inset 0 1.5px 1px rgba(255, 255, 255, 0.8), 0 4px 14px rgba(57, 60, 167, 0.2);
     transform: translateX(calc(var(--i) * 100%));
     transition: transform 0.55s var(--spring);
 }
@@ -985,8 +988,8 @@ p {
     .size.is-active {
         border-color: var(--brand);
         color: var(--brand);
-        background: rgba(48, 47, 166, 0.08);
-        box-shadow: 0 0 0 3px rgba(48, 47, 166, 0.12);
+        background: rgba(57, 60, 167, 0.08);
+        box-shadow: 0 0 0 3px rgba(57, 60, 167, 0.12);
     }
 
     .size.is-out {
@@ -1257,7 +1260,7 @@ p {
     overflow: hidden;
     padding: 22px;
     background: linear-gradient(135deg, #5a58c9, #201F7A 60%, #0f0e4f);
-    box-shadow: 0 18px 40px rgba(48, 47, 166, 0.35);
+    box-shadow: 0 18px 40px rgba(57, 60, 167, 0.35);
 }
 
 .blob {
@@ -1444,7 +1447,7 @@ p {
 }
 
 .status-Delivering {
-    background: rgba(48, 47, 166, 0.16);
+    background: rgba(57, 60, 167, 0.16);
     color: var(--brand-deep);
 }
 
