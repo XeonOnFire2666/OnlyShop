@@ -4,13 +4,6 @@
     const initData = tg && tg.initData ? tg.initData : '';
     const useMock = cfg.mock || new URLSearchParams(location.search).has('mock') || !initData;
 
-    /**
-     * Универсальный запрос к API.
-     * Гарантирует:
-     *  — понятную ошибку вместо "Unexpected token '<'", если прилетел HTML;
-     *  — отдельные сообщения для 401/403/404/405/5xx;
-     *  — корректный разбор JSON-ошибок ASP.NET (ProblemDetails / ValidationProblemDetails).
-     */
     async function request(method, path, body) {
         if (useMock) return window.App.mockRequest(method, path, body);
 
@@ -39,7 +32,6 @@
         const contentType = (res.headers.get('content-type') || '').toLowerCase();
         const isJson = contentType.includes('application/json') || contentType.includes('+json');
 
-        // --- Ошибки HTTP ---
         if (!res.ok) {
             let message = '';
             let payload = null;
@@ -54,15 +46,12 @@
                         (payload.errors && Object.values(payload.errors).flat().join('; ')) ||
                         '';
                 } catch (e) {
-                    /* ignore */
                 }
             } else {
-                // Прилетел HTML/plain — почти всегда SPA-fallback или страница nginx.
                 let text = '';
                 try {
                     text = await res.text();
                 } catch (e) {
-                    /* ignore */
                 }
                 const snippet = text.trim().slice(0, 180).replace(/\s+/g, ' ');
 
@@ -94,16 +83,13 @@
             throw error;
         }
 
-        // --- Успешный статус, но не JSON ---
         if (!isJson) {
             let text = '';
             try {
                 text = await res.text();
             } catch (e) {
-                /* ignore */
             }
 
-            // Пустое тело — валидный случай (204).
             if (!text) return null;
 
             const trimmed = text.trim();
@@ -116,7 +102,6 @@
                 );
             }
 
-            // Иногда бэкенд отдаёт JSON без правильного Content-Type — попробуем разобрать.
             try {
                 return JSON.parse(trimmed);
             } catch (e) {
@@ -129,7 +114,6 @@
             }
         }
 
-        // Пустой ответ с application/json — тоже ок.
         const raw = await res.text();
         return raw ? JSON.parse(raw) : null;
     }
@@ -145,7 +129,6 @@
         if (!path) return '';
         if (/^(https?:|data:)/.test(path)) return path;
         if (path.startsWith('/')) {
-            // Абсолютный путь — считаем, что это с того же apiBase.
             return (cfg.apiBase || '') + path;
         }
         return (cfg.photoBase || '') + path;

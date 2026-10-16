@@ -61,6 +61,8 @@ app.UseAuthorization();
 app.MapOpenApi();
 app.MapControllers();
 
+app.MapAdapters();
+
 app.MapFallbackToFile("index.html");
 
 app.Run();
