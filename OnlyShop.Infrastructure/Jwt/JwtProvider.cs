@@ -15,10 +15,10 @@ public class JwtProvider(IOptions<JwtOptions> options) : IJwtProvider
     {
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, staff.Id.ToString()),
-            new Claim(ClaimTypes.Email, staff.Email),
-            new Claim(ClaimTypes.Name, staff.Name),
-            new Claim(ClaimTypes.Role, staff.Role.ToString())
+            new Claim(JwtRegisteredClaimNames.Sub, staff.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.Email, staff.Email),
+            new Claim("name", staff.Name),
+            new Claim("role", staff.Role.ToString()),
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Key));
