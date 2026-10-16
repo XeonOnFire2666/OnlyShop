@@ -5,6 +5,87 @@
     const tg = api.tg;
     const PAGE_SIZE = 20;
 
+    const TAB_ORDER = ['catalog', 'favorites', 'basket', 'profile'];
+
+    function useTabSwipe() {
+        const { nav } = useApp();
+        const navRef = useRef(nav);
+        useEffect(() => { navRef.current = nav; });
+
+        useEffect(() => {
+            const BLOCKERS = '.chips, .gallery, .segment, .options, .modal, .product-sheet, input, textarea, select, [data-no-swipe]';
+
+            const isBlocked = (el) => {
+                if (!el || !el.closest) return false;
+                return !!el.closest(BLOCKERS);
+            };
+
+            let start = null;
+
+            const onStart = (e) => {
+                const n = navRef.current;
+                if (!n || n.productId) { start = null; return; }
+                if (isBlocked(e.target)) { start = null; return; }
+                const pt = e.touches ? e.touches[0] : e;
+                start = { x: pt.clientX, y: pt.clientY, t: Date.now() };
+            };
+
+            const onMove = (e) => {
+                if (!start) return;
+                const pt = e.touches ? e.touches[0] : e;
+                const dx = pt.clientX - start.x;
+                const dy = pt.clientY - start.y;
+                if (Math.abs(dy) > 24 && Math.abs(dy) > Math.abs(dx) * 1.2) start = null;
+            };
+
+            const onEnd = (e) => {
+                const s = start;
+                start = null;
+                if (!s) return;
+                const n = navRef.current;
+                if (!n || n.productId) return;
+                const pt = e.changedTouches ? e.changedTouches[0] : e;
+                const dx = pt.clientX - s.x;
+                const dy = pt.clientY - s.y;
+                const dt = Date.now() - s.t;
+
+                if (dt > 700) return;                             
+                if (Math.abs(dx) < 70) return;                   
+                if (Math.abs(dx) < Math.abs(dy) * 1.5) return;   
+
+                const idx = TAB_ORDER.indexOf(n.tab);
+                if (idx < 0) return;
+
+                if (dx < 0) {
+                    if (idx < TAB_ORDER.length - 1) n.setTab(TAB_ORDER[idx + 1]);
+                } else {
+                    if (idx > 0) n.setTab(TAB_ORDER[idx - 1]);
+                }
+            };
+
+            const onCancel = () => { start = null; };
+
+            document.addEventListener('touchstart', onStart, { passive: true });
+            document.addEventListener('touchmove', onMove, { passive: true });
+            document.addEventListener('touchend', onEnd, { passive: true });
+            document.addEventListener('touchcancel', onCancel, { passive: true });
+
+            document.addEventListener('mousedown', onStart);
+            document.addEventListener('mousemove', onMove);
+            document.addEventListener('mouseup', onEnd);
+
+            return () => {
+                document.removeEventListener('touchstart', onStart);
+                document.removeEventListener('touchmove', onMove);
+                document.removeEventListener('touchend', onEnd);
+                document.removeEventListener('touchcancel', onCancel);
+                document.removeEventListener('mousedown', onStart);
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onEnd);
+            };
+        }, []);
+    }
+
     const STATUS_LABELS = {
         Pending: 'Ожидает подтверждения',
         Confirmed: 'Принят',
@@ -24,6 +105,7 @@
     };
 
     function CatalogPage() {
+        useTabSwipe();
         const { categories, categoryId, setCategoryId, remember, nav } = useApp();
         const [query, setQuery] = useState('');
         const [debounced, setDebounced] = useState('');
@@ -230,6 +312,7 @@
     }
 
     function FavoritesPage() {
+        useTabSwipe();
         const { favIds, getProduct, nav } = useApp();
         const [items, setItems] = useState([]);
         const [loading, setLoading] = useState(true);
@@ -283,6 +366,7 @@
     }
 
     function BasketPage() {
+        useTabSwipe();
         const { basket, basketTotals, currency, user, checkout, nav, toast } = useApp();
         const [form, setForm] = useState({
             name: '',
@@ -455,6 +539,7 @@
     }
 
     function ProfilePage() {
+        useTabSwipe();
         const { orders, nav, user, favIds } = useApp();
         const [sheet, setSheet] = useState(null);
         const last = orders[0];

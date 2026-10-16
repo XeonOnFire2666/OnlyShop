@@ -243,8 +243,6 @@ p {
     letter-spacing: 0.01em;
 }
 
-/* ── Source Serif 4 — для вкладок «Избранное», «Корзина», «Профиль»
-   (заголовок h1 + англ. подпись eyebrow внутри PageTitle) ── */
 .page-title h1,
 .page-title .eyebrow {
     font-family: var(--font-serif);
