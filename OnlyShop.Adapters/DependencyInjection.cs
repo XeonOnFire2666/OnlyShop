@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -18,6 +19,8 @@ namespace OnlyShop.Adapters;
 
 public static class DependencyInjection
 {
+    private const string SmartScheme = "SmartScheme";
+
     public static IServiceCollection AddAdapters(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddOptions<JwtOptions>()
@@ -45,20 +48,39 @@ public static class DependencyInjection
         services.AddProblemDetails();
         services.ConfigureHttpJsonOptions(o => o.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(o =>
+        // --- Authentication: JWT для staff/admin, Telegram initData для клиентов ---
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = SmartScheme;
+            options.DefaultChallengeScheme = SmartScheme;
+        })
+        .AddPolicyScheme(SmartScheme, SmartScheme, options =>
+        {
+            // Если заголовок начинается с "tma " — идём в Telegram-схему,
+            // иначе — в JWT (staff/admin).
+            options.ForwardDefaultSelector = context =>
             {
-                o.MapInboundClaims = false;
-                o.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidIssuer = jwt.Issuer,
-                    ValidAudience = jwt.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key)),
-                    NameClaimType = "sub",
-                    RoleClaimType = "role",
-                    ClockSkew = TimeSpan.FromSeconds(30)
-                };
-            });
+                var auth = context.Request.Headers.Authorization.ToString();
+                return auth.StartsWith("tma ", StringComparison.OrdinalIgnoreCase)
+                    ? TelegramInitDataAuthenticationHandler.Scheme
+                    : JwtBearerDefaults.AuthenticationScheme;
+            };
+        })
+        .AddJwtBearer(o =>
+        {
+            o.MapInboundClaims = false;
+            o.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidIssuer = jwt.Issuer,
+                ValidAudience = jwt.Audience,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key)),
+                NameClaimType = "sub",
+                RoleClaimType = "role",
+                ClockSkew = TimeSpan.FromSeconds(30)
+            };
+        })
+        .AddScheme<AuthenticationSchemeOptions, TelegramInitDataAuthenticationHandler>(
+            TelegramInitDataAuthenticationHandler.Scheme, _ => { });
 
         services.AddAuthorizationBuilder()
             .AddPolicy(Policies.Customer, p => p.RequireRole(Roles.Customer))
