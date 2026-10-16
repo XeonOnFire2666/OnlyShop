@@ -47,20 +47,7 @@
       <header className="header">
         <button className="icon-btn" aria-label="Категории" onClick=${() => setOpen(true)}><${Icon} name="menu" size=${26} /></button>
         <div className="brand">
-          <div
-            className="wordmark"
-            style=${{
-                fontFamily: '"Arial Black", Impact, "Haettenschweiler", sans-serif',
-                fontWeight: 900,
-                fontSize: '20px',
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
-                transform: 'scaleX(1.25)',
-                transformOrigin: 'center',
-                display: 'inline-block',
-                whiteSpace: 'nowrap'
-            }}
-          >ONLYSHOP</div>
+          <div className="wordmark">ONLYSHOP</div>
         </div>
         <button className="icon-btn" aria-label="Поиск" onClick=${nav.focusSearch}><${Icon} name="search" size=${26} /></button>
       </header>
