@@ -27,6 +27,8 @@ internal sealed class OrderWorkflow(
 
         order.ChangeStatus(newStatus, staffId, note);
 
+        uow.Add(order.StatusHistory.Last());
+
         switch (newStatus)
         {
             case OrderStatus.Canceled:

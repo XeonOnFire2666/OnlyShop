@@ -39,8 +39,7 @@ internal sealed class BasketService(
 
         if (existingItem == null)
         {
-            var newItem = basket.Items.Last();      
-            uow.Add(newItem);       
+            uow.Add(basket.Items.Last());
         }
 
         await uow.SaveChangesAsync(ct);
