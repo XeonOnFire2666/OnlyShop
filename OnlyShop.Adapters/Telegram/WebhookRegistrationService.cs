@@ -25,7 +25,7 @@ internal sealed class WebhookRegistrationService(
         {
             await bot.SetWebhook(
                 $"{settings.PublicBaseUrl.TrimEnd('/')}/telegram/webhook",
-                allowedUpdates: [UpdateType.Message],
+                allowedUpdates: [UpdateType.Message, UpdateType.CallbackQuery],
                 secretToken: settings.SecretToken,
                 cancellationToken: ct);
         }

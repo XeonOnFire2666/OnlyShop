@@ -42,7 +42,7 @@ internal sealed class OrderManagementService(
         return new OrderDetailsDto(order.ToDto(), customer.ToDto());
     }
 
-    public async Task<OrderDto> ChangeStatusAsync(Guid staffId, Guid orderId, ChangeOrderStatusRequest request, CancellationToken ct = default)
+    public async Task<OrderDto> ChangeStatusAsync(Guid? staffId, Guid orderId, ChangeOrderStatusRequest request, CancellationToken ct = default)
     {
         var order = await LoadAsync(orderId, ct);
         await workflow.ChangeStatusAsync(order, request.Status, staffId, request.Note, ct);
