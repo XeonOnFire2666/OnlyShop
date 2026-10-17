@@ -41,6 +41,9 @@ public static class DependencyInjection
 
         services.AddMemoryCache();
         services.AddSingleton<StaffLinkCodes>();
+
+        services.AddScoped<OrderNotifier>();
+
         services.AddScoped<TelegramUpdateHandler>();
         services.AddHostedService<WebhookRegistrationService>();
 
