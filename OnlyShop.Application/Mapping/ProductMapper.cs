@@ -46,7 +46,7 @@ internal sealed class ProductMapper(IFileStorage storage)
             .Select(p => storage.GetPublicUrl(p.StoragePath))
             .ToList(),
         product.Variants
-            .Select(v => new ProductVariantDto(v.Id, v.Size, product.IsPresale || v.StockQuantity > 0))
+            .Select(v => new ProductVariantDto(v.Id, v.Size, v.StockQuantity, product.IsPresale || v.StockQuantity > 0))
             .ToList());
 
     public AdminProductListItemDto ToAdminListItem(Product product) => new(

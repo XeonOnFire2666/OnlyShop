@@ -7,7 +7,7 @@ public sealed record CategoryDto(Guid Id, string Name, string Slug, Guid? Parent
 
 public sealed record PresaleLocationDto(Guid Id, string Name, string? Description, string? PhotoUrl);
 
-public sealed record ProductVariantDto(Guid Id, string Size, bool IsAvailable);
+public sealed record ProductVariantDto(Guid Id, string Size, int StockQuantity, bool IsAvailable);
 
 public sealed record ProductCardDto(
     Guid Id,
