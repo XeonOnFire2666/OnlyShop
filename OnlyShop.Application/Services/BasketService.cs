@@ -28,12 +28,21 @@ internal sealed class BasketService(
         var variant = FindVariant(product, request.VariantId);
         var basket = await GetOrCreateAsync(userId, ct);
 
-        var existing = basket.Items
-            .FirstOrDefault(i => i.ProductVariantId == variant.Id)?.Quantity ?? 0;
+        var existingItem = basket.Items
+            .FirstOrDefault(i => i.ProductVariantId == variant.Id);
 
-        EnsureCanOrder(product, variant, existing + request.Quantity);
+        var existingQuantity = existingItem?.Quantity ?? 0;
+
+        EnsureCanOrder(product, variant, existingQuantity + request.Quantity);
 
         basket.AddItem(product.Id, variant.Id, request.Quantity);
+
+        if (existingItem == null)
+        {
+            var newItem = basket.Items.Last();      
+            uow.Add(newItem);       
+        }
+
         await uow.SaveChangesAsync(ct);
 
         return await BuildAsync(basket, ct);
