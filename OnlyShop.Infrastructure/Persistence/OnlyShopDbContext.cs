@@ -21,6 +21,10 @@ public class OnlyShopDbContext(DbContextOptions<OnlyShopDbContext> options)
         builder.ApplyConfigurationsFromAssembly(typeof(OnlyShopDbContext).Assembly);
         base.OnModelCreating(builder);
     }
+    public void Add<T>(T entity) where T : class
+    {
+        Set<T>().Add(entity);
+    }
 
     public Task<int> SaveChangesAsync(CancellationToken ct = default) => base.SaveChangesAsync(ct);
 }
