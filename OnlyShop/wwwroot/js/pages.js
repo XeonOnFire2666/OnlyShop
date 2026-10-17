@@ -134,6 +134,9 @@
     function CatalogPage() {
         useTabSwipe();
         const { categories, categoryId, setCategoryId, remember, nav } = useApp();
+
+        const [showCatalog, setShowCatalog] = useState(false);
+
         const [query, setQuery] = useState('');
         const [debounced, setDebounced] = useState('');
         const [state, setState] = useState({ items: [], total: 0, page: 0, loading: true, error: null, done: false });
@@ -200,38 +203,58 @@
         const activeCategory = categories.find((c) => c.id === categoryId);
         const rootId = activeCategory ? activeCategory.parentId || activeCategory.id : null;
         const children = rootId ? categories.filter((c) => c.parentId === rootId) : [];
+
         const heroProduct = state.items.find((p) => p.photos[0]);
-        const showHero = !debounced && !categoryId && heroProduct;
 
         const onRoot = (id) => setCategoryId(id);
         const onChild = (id) => setCategoryId(id === null ? rootId : id);
 
         return html`<section className="page">
-      ${showHero &&
-            html`<div className="hero">
-        <span className="eyebrow">The Best Shop</span>
-        <h1 className="hero-title"><b>Лучший</b> шоп</h1>
-        <div className="hero-photo"><img src=${heroProduct.photos[0]} alt=${heroProduct.name} onClick=${() => nav.openProduct(heroProduct.id)} /></div>
-        <button className="btn-black glass-dark" onClick=${() => gridTop.current && gridTop.current.scrollIntoView({ behavior: 'smooth' })}>
-          Перейти в каталог<${Icon} name="arrow" size=${20} />
-        </button>
-      </div>`}
-      <div ref=${gridTop} className="toolbar">
-        <${CurrencySwitch} />
-        <${Chips} items=${roots} value=${rootId} onChange=${onRoot} />
-      </div>
-      ${children.length > 0 && html`<${Chips} items=${children} value=${categoryId === rootId ? null : categoryId} onChange=${onChild} allLabel="Всё" />`}
-      <label className="search glass">
-        <${Icon} name="search" size=${20} />
-        <input ref=${searchInput} type="search" placeholder="Поиск по названию или бренду" value=${query} onInput=${(e) => setQuery(e.target.value)} />
-      </label>
-      ${state.items.length === 0 && state.loading && html`<${SkeletonGrid} />`}
-      ${state.items.length === 0 && !state.loading && !state.error &&
-            html`<${Empty} icon="search" title="Ничего не найдено" text="Попробуйте другое название или выберите другую категорию." />`}
-      ${state.error && html`<${Empty} icon="close" title="Не удалось загрузить каталог" text=${state.error} action=${html`<button className="btn-outline" onClick=${() => load(1, true)}>Повторить</button>`} />`}
-      ${state.items.length > 0 && html`<div className="grid">${state.items.map((p) => html`<${ProductCard} key=${p.id} product=${p} />`)}</div>`}
-      ${state.loading && state.items.length > 0 && html`<div className="loader"></div>`}
-      <div ref=${sentinel} className="sentinel"></div>
+      
+      <!-- ЭКРАН 1: ПРОМО-СТРАНИЦА (Показывается, пока showCatalog === false) -->
+      ${!showCatalog && html`
+        <div className="hero">
+          <span className="eyebrow">THE BEST SHOP</span>
+          <h1 className="hero-title"><b>Лучший</b> шоп</h1>
+          
+          ${heroProduct ? html`
+            <div className="hero-photo">
+                <img src=${heroProduct.photos[0]} alt=${heroProduct.name} onClick=${() => nav.openProduct(heroProduct.id)} />
+            </div>
+          ` : html`
+            <div className="hero-photo skeleton"></div>
+          `}
+
+          <button className="btn-black glass-dark" onClick=${() => setShowCatalog(true)}>
+            Перейти в каталог<${Icon} name="arrow" size=${22} />
+          </button>
+        </div>
+      `}
+
+      <!-- ЭКРАН 2: САМ КАТАЛОГ (Появляется только после нажатия на кнопку) -->
+      ${showCatalog && html`
+        <div ref=${gridTop} className="toolbar" style=${{ marginTop: '10px' }}>
+          <${CurrencySwitch} />
+          <${Chips} items=${roots} value=${rootId} onChange=${onRoot} />
+        </div>
+        ${children.length > 0 && html`<${Chips} items=${children} value=${categoryId === rootId ? null : categoryId} onChange=${onChild} allLabel="Всё" />`}
+        
+        <label className="search glass">
+          <${Icon} name="search" size=${20} />
+          <input ref=${searchInput} type="search" placeholder="Поиск по названию или бренду" value=${query} onInput=${(e) => setQuery(e.target.value)} />
+        </label>
+
+        ${state.items.length === 0 && state.loading && html`<${SkeletonGrid} />`}
+        ${state.items.length === 0 && !state.loading && !state.error &&
+                html`<${Empty} icon="search" title="Ничего не найдено" text="Попробуйте другое название или выберите другую категорию." />`}
+        ${state.error && html`<${Empty} icon="close" title="Не удалось загрузить каталог" text=${state.error} action=${html`<button className="btn-outline" onClick=${() => load(1, true)}>Повторить</button>`} />`}
+        
+        ${state.items.length > 0 && html`<div className="grid">${state.items.map((p) => html`<${ProductCard} key=${p.id} product=${p} />`)}</div>`}
+        
+        ${state.loading && state.items.length > 0 && html`<div className="loader"></div>`}
+        
+        <div ref=${sentinel} className="sentinel"></div>
+      `}
     </section>`;
     }
 
@@ -283,7 +306,7 @@
             if (product.isPresale) {
                 stockText = 'Предзаказ до ' + formatDate(product.presaleClosesAt);
             } else if (variant.stock > 0) {
-                stockText = 'В наличии: ' + variant.stock + ' ' + pairs(variant.stock);
+                stockText = 'В наличии: ' + variant.stock + ' шт.';
             } else {
                 stockText = 'Нет в наличии';
             }
