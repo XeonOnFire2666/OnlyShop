@@ -66,7 +66,8 @@ internal sealed class StaffService(
             Email = email,
             PasswordHash = hasher.Hash(request.Password),
             Name = request.Name.Trim(),
-            Role = request.Role
+            Role = request.Role,
+            TelegramId = request.TelegramId        
         };
 
         staff.Add(member);
@@ -93,10 +94,11 @@ internal sealed class StaffService(
 
     public async Task UpdateTelegramIdAsync(Guid staffId, long? telegramId, CancellationToken ct = default)
     {
-        var staff = await staffRepository.GetByIdAsync(staffId, ct)
-            ?? throw new NotFoundException(nameof(StaffMember), staffId);
+        var member = await LoadAsync(staffId, ct);
 
-        staff.TelegramId = telegramId;
+        member.TelegramId = telegramId;
+        member.UpdatedAt = DateTime.UtcNow;
+
         await uow.SaveChangesAsync(ct);
     }
 
