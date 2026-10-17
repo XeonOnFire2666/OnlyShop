@@ -158,6 +158,10 @@ internal sealed class ProductManagementService(
         try
         {
             product.AddPhoto(path, staffId);
+
+            var newPhoto = product.Photos.Last();
+            uow.Add(newPhoto);
+
             await uow.SaveChangesAsync(ct);
         }
         catch
