@@ -2,7 +2,6 @@
 
 public enum DeliveryMethod
 {
-    Auto,
-    Air,
+    Courier,
     Pickup
 }

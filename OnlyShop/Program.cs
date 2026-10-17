@@ -64,6 +64,7 @@ app.Use(async (ctx, next) =>
 
 app.UseRouting();
 app.UseCors();
+app.UseExceptionHandler();
 
 app.UseAuthentication();
 app.UseAuthorization();
