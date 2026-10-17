@@ -50,3 +50,10 @@
         justify-content: flex-end;
     }
 }
+
+.staff-row__tg {
+    font-size: 0.75rem;
+    color: var(--primary-bright);
+    font-family: var(--font-mono);
+    margin-top: 0.2rem;
+}

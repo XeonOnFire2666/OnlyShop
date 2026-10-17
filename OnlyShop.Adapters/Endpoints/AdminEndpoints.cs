@@ -56,6 +56,8 @@ internal static class AdminEndpoints
         products.MapPut("/{id:guid}/in-stock", (ClaimsPrincipal user, Guid id, IProductManagementService service, CancellationToken ct) =>
             service.SetInStockAsync(user.GetId(), id, ct));
 
+
+
         products.MapPost("/{id:guid}/variants", (ClaimsPrincipal user, Guid id, VariantInput request, IProductManagementService service, CancellationToken ct) =>
             service.AddVariantAsync(user.GetId(), id, request, ct));
 
@@ -123,6 +125,12 @@ internal static class AdminEndpoints
 
         staff.MapPost("/", (CreateStaffRequest request, IStaffService service, CancellationToken ct) =>
             service.CreateAsync(request, ct));
+
+        staff.MapPut("/{id:guid}/telegram", async (Guid id, UpdateStaffTelegramRequest request, IStaffService service, CancellationToken ct) =>
+        {
+            await service.UpdateTelegramIdAsync(id, request.TelegramId, ct);
+            return Results.NoContent();
+        });
 
         staff.MapPut("/{id:guid}/active", async (Guid id, SetActiveRequest request, IStaffService service, CancellationToken ct) =>
         {

@@ -9,4 +9,5 @@ public interface IStaffService
     Task<StaffDto> CreateAsync(CreateStaffRequest request, CancellationToken ct = default);
     Task SetActiveAsync(Guid staffId, bool isActive, CancellationToken ct = default);
     Task LinkTelegramAsync(Guid staffId, long telegramId, CancellationToken ct = default);
+    Task UpdateTelegramIdAsync(Guid staffId, long? telegramId, CancellationToken ct = default);
 }

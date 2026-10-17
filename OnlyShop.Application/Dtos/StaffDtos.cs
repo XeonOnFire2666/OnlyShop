@@ -10,4 +10,6 @@ public sealed record StaffDto(
     bool IsActive,
     long? TelegramId);
 
-public sealed record CreateStaffRequest(string Email, string Password, string Name, StaffRole Role);
+public sealed record CreateStaffRequest(string Email, string Password, string Name, StaffRole Role, long? TelegramId = null);
+
+public sealed record UpdateStaffTelegramRequest(long? TelegramId);

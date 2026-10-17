@@ -91,6 +91,15 @@ internal sealed class StaffService(
         await uow.SaveChangesAsync(ct);
     }
 
+    public async Task UpdateTelegramIdAsync(Guid staffId, long? telegramId, CancellationToken ct = default)
+    {
+        var staff = await staffRepository.GetByIdAsync(staffId, ct)
+            ?? throw new NotFoundException(nameof(StaffMember), staffId);
+
+        staff.TelegramId = telegramId;
+        await uow.SaveChangesAsync(ct);
+    }
+
     private async Task<StaffMember> LoadAsync(Guid staffId, CancellationToken ct) =>
         await staff.GetByIdAsync(staffId, ct)
             ?? throw new NotFoundException(nameof(StaffMember), staffId);

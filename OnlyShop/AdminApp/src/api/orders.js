@@ -20,4 +20,5 @@ export const staffApi = {
     list: () => api.get("/staff"),
     create: (payload) => api.post("/staff", payload),
     setActive: (id, isActive) => api.put(`/staff/${id}/active`, { isActive }),
+    updateTelegram: (id, telegramId) => api.put(`/staff/${id}/telegram`, { telegramId }),
 };
