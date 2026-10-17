@@ -425,7 +425,7 @@
             setSubmitting(true);
             try {
                 const result = await checkout({ ...form, bonuses });
-                setDone((result && (result.number || result.orderNumber)) || true);
+                setDone(result || true); 
             } catch (e) {
                 toast(e.message);
             } finally {
@@ -435,18 +435,18 @@
 
         if (done) {
             const isCardTransfer = form.payment === 'CardTransfer';
-            const orderId = typeof done === 'object' ? done.id : (typeof done === 'string' ? done : null);
+            const orderId = typeof done === 'object' ? done.id : null;
             const payLink = `https://t.me/${cfg.botUsername}?start=pay_${orderId}`;
 
             return html`<section className="page">
         <${Empty}
           icon="check"
-          title=${done === true ? 'Заказ оформлен' : 'Заказ оформлен'}
+          title="Заказ оформлен"
           text=${isCardTransfer
                     ? "Пожалуйста, переведите сумму на карту и отправьте скриншот чека нашему боту."
                     : "Менеджер получил заказ и скоро свяжется с вами в Telegram."}
           action=${isCardTransfer
-                    ? html`<a href=${payLink} className="btn-outline" style="text-decoration:none; margin-top:16px; display:inline-flex;">📸 Отправить чек в бот</a>`
+                    ? html`<a href=${payLink} className="btn-outline" style=${{ textDecoration: 'none', marginTop: '16px', display: 'inline-flex' }}>📸 Отправить чек в бот</a>`
                     : html`<button className="btn-outline" onClick=${() => { setDone(null); nav.setTab('profile'); }}>Смотреть заказы</button>`}
         />
       </section>`;

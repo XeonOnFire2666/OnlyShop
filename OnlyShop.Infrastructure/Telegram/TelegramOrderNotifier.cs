@@ -110,7 +110,11 @@ public class TelegramOrderNotifier(ITelegramBotClient bot) : IOrderNotifier
 
         sb.AppendLine();
         sb.AppendLine($"<b>Статус:</b> {GetStatusText(order.Status)}");
-        sb.AppendLine($"<i>{order.CreatedAt.ToLocalTime():dd.MM.yyyy HH:mm}</i>");
+
+        var moscowTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Russian Standard Time");
+        var localTime = TimeZoneInfo.ConvertTimeFromUtc(order.CreatedAt, moscowTimeZone);
+
+        sb.AppendLine($"<i>{localTime:dd.MM.yyyy HH:mm}</i>");
 
         return sb.ToString();
     }
