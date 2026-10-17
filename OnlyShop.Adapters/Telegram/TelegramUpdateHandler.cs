@@ -5,6 +5,7 @@ using OnlyShop.Adapters.Options;
 using OnlyShop.Application.Abstractions.Persistence;
 using OnlyShop.Application.Abstractions.Services;
 using OnlyShop.Application.Dtos;
+using OnlyShop.Core.Enums;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -19,7 +20,7 @@ internal sealed class TelegramUpdateHandler(
     IOrderRepository orderRepo,
     OrderNotifier notifier,
     StaffLinkCodes linkCodes,
-    IMemoryCache cache,    
+    IMemoryCache cache,
     IOptions<TelegramWebhookOptions> options,
     ILogger<TelegramUpdateHandler> logger)
 {
@@ -87,38 +88,100 @@ internal sealed class TelegramUpdateHandler(
     {
         if (cache.TryGetValue($"pay_{from.Id}", out Guid orderId))
         {
-            cache.Remove($"pay_{from.Id}");   
+            cache.Remove($"pay_{from.Id}");
 
             var allStaff = await staff.GetAllAsync(ct);
             var managerIds = allStaff.Where(s => s.IsActive && s.TelegramId.HasValue).Select(s => s.TelegramId!.Value).ToList();
 
             if (!managerIds.Any())
             {
-                await bot.SendMessage(msg.Chat.Id, "Ошибка: нет активных менеджеров. Пожалуйста, свяжитесь с администратором.", cancellationToken: ct);
+                await bot.SendMessage(msg.Chat.Id, "Ошибка: нет активных менеджеров.", cancellationToken: ct);
                 return;
             }
 
             var caption = $"🧾 <b>Чек об оплате</b>\nЗаказ: #{orderId.ToString()[..8].ToUpper()}\nКлиент: {from.FirstName} (@{from.Username})\nID клиента: {from.Id}";
 
+            var keyboard = new InlineKeyboardMarkup(new[]
+            {
+                new[]
+                {
+                    InlineKeyboardButton.WithCallbackData("✅ Подтвердить", $"rc:ok:{orderId:N}"),
+                    InlineKeyboardButton.WithCallbackData("❌ Отклонить", $"rc:no:{orderId:N}")
+                }
+            });
+
             foreach (var managerId in managerIds)
             {
                 try
                 {
-                    await bot.SendPhoto(managerId, fileId, caption: caption, parseMode: ParseMode.Html, cancellationToken: ct);
+                    await bot.SendPhoto(
+                        managerId,
+                        fileId,
+                        caption: caption,
+                        parseMode: ParseMode.Html,
+                        replyMarkup: keyboard,    
+                        cancellationToken: ct);
                 }
-                catch {       }
+                catch { }
             }
 
-            await bot.SendMessage(msg.Chat.Id, "✅ Спасибо! Скриншот отправлен менеджеру. Ожидайте подтверждения оплаты.", cancellationToken: ct);
+            await bot.SendMessage(msg.Chat.Id, "✅ Скриншот отправлен менеджеру. Ожидайте подтверждения.", cancellationToken: ct);
         }
         else
         {
-            await bot.SendMessage(msg.Chat.Id, "Не понял, к какому заказу относится это фото. Пожалуйста, вернитесь в Mini App и нажмите кнопку «Отправить чек».", cancellationToken: ct);
+            await bot.SendMessage(msg.Chat.Id, "Не понял, к какому заказу относится это фото. Нажмите кнопку «Отправить чек» в Mini App.", cancellationToken: ct);
         }
     }
 
     private async Task HandleCallbackAsync(CallbackQuery callback, string data, CancellationToken ct)
     {
+        if (data.StartsWith("rc:"))
+        {
+            var parts = data.Split(':');
+            if (parts.Length == 3 && Guid.TryParseExact(parts[2], "N", out var receiptOrderId))
+            {
+                var isConfirm = parts[1] == "ok";
+
+                try
+                {
+                    if (isConfirm)
+                    {
+                        var orderEntity = await orderRepo.GetByIdAsync(receiptOrderId, ct);
+                        if (orderEntity?.Status == OrderStatus.Pending)
+                        {
+                            await orders.ChangeStatusAsync(null, receiptOrderId, new ChangeOrderStatusRequest(OrderStatus.Confirmed, "Чек принят"), ct);
+                        }
+
+                        await orders.ChangeStatusAsync(null, receiptOrderId, new ChangeOrderStatusRequest(OrderStatus.Paid, "Оплата подтверждена по чеку"), ct);
+                    }
+                    else
+                    {
+                        await orders.ChangeStatusAsync(null, receiptOrderId, new ChangeOrderStatusRequest(OrderStatus.Canceled, "Чек отклонен"), ct);
+                    }
+
+                    await bot.AnswerCallbackQuery(callback.Id, isConfirm ? "Оплата подтверждена" : "Оплата отклонена", cancellationToken: ct);
+
+                    if (callback.Message is { } msg)
+                    {
+                        var newCaption = msg.Caption + $"\n\n{(isConfirm ? "✅ <b>Оплата подтверждена</b>" : "❌ <b>Оплата отклонена</b>")}";
+                        await bot.EditMessageCaption(
+                            msg.Chat.Id,
+                            msg.MessageId,
+                            newCaption,
+                            parseMode: ParseMode.Html,
+                            replyMarkup: null,
+                            cancellationToken: ct);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await bot.AnswerCallbackQuery(callback.Id, $"Ошибка: {ex.Message}", showAlert: true, cancellationToken: ct);
+                    logger.LogWarning(ex, "Failed to process receipt callback for order {OrderId}", receiptOrderId);
+                }
+                return;   
+            }
+        }
+
         if (!OrderKeyboard.TryParse(data, out var orderId, out var newStatus))
             return;
 
