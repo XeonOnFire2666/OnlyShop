@@ -247,24 +247,20 @@ p {
 .page-title .eyebrow {
     font-family: var(--font-serif);
     font-style: normal;
-    font-weight: 700;         
+    font-weight: 700;
     letter-spacing: 0.005em;
     text-transform: none;
 }
 
 .page-title .eyebrow {
-    font-weight: 600;          
+    font-weight: 600;
     font-size: 14px;
     letter-spacing: 0.04em;
 }
 
-.page-title h1 {
-    font-size: clamp(52px, 16vw, 80px);
-}
-
 .hero {
-    padding-top: 24px;      
-    padding-bottom: 60px;            
+    padding-top: 24px;
+    padding-bottom: 60px;
     display: flex;
     flex-direction: column;
 }
@@ -278,10 +274,15 @@ p {
     }
 
     .hero .btn-black {
-        margin-top: 30px;
-        padding: 24px 22px;
-        font-size: 15px;
-        border-radius: 22px;
+        margin-top: 24px;
+        min-height: 80px;    
+        padding: 0 24px;
+        font-size: 16px;
+        border-radius: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
     }
 
 .hero-title {
@@ -298,11 +299,11 @@ p {
     }
 
 .hero-photo {
-    position: relative;      
+    position: relative;
     margin: 14px -20px 0;
     aspect-ratio: 4 / 3;
     overflow: hidden;
-    background: var(--bg);         
+    background: var(--bg);
 }
 
     .hero-photo img {
@@ -312,19 +313,20 @@ p {
         cursor: pointer;
     }
 
-    .hero-photo::after {
+    .hero-photo::before {
         content: '';
         position: absolute;
-        bottom: 0;
+        top: 0;
         left: 0;
         right: 0;
-        height: 35%;     
-        background: linear-gradient(to bottom, transparent 0%, var(--bg) 100%);
-        pointer-events: none;         
+        height: 35%;
+        background: linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
+        pointer-events: none;
         -webkit-backdrop-filter: blur(8px);
         backdrop-filter: blur(8px);
-        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
-        mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
+        -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+        mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
+        z-index: 1;
     }
 
 .btn-black {
