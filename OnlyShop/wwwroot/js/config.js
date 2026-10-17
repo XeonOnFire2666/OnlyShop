@@ -6,6 +6,7 @@ window.APP_CONFIG = {
     managerUsername: 'aarabica666',
     botUsername: 'onlyshop00_bot',
     usdRate: 3.2,
+    maxBonusSpendPercent: 30,
     mock: false,
     shopAddress: 'Пресненская наб., 2, Москва',
     deliveryMethods: [

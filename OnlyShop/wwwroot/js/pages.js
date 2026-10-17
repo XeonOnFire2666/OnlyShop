@@ -16,9 +16,9 @@
             const BLOCKERS = '.chips, .gallery, .segment, .options, .modal, .product-sheet, input, textarea, select, [data-no-swipe]';
             const isBlocked = (el) => !!el && !!el.closest && !!el.closest(BLOCKERS);
 
-            let start = null;                   
-            let lockUntil = 0;                 
-            let lastTouchAt = 0;              
+            let start = null;
+            let lockUntil = 0;
+            let lastTouchAt = 0;
 
             const onStart = (e, isTouch) => {
                 const now = Date.now();
@@ -66,19 +66,19 @@
                 const dy = pt.clientY - s.y;
                 const dt = now - s.t;
 
-                if (dt > 700) return;                               
-                if (Math.abs(dx) < 70) return;                      
-                if (Math.abs(dx) < Math.abs(dy) * 1.5) return;      
+                if (dt > 700) return;
+                if (Math.abs(dx) < 70) return;
+                if (Math.abs(dx) < Math.abs(dy) * 1.5) return;
 
                 const idx = TAB_ORDER.indexOf(n.tab);
                 if (idx < 0) return;
 
                 let nextIdx = idx;
-                if (dx < 0 && idx < TAB_ORDER.length - 1) nextIdx = idx + 1;    
-                else if (dx > 0 && idx > 0) nextIdx = idx - 1;                  
-                if (nextIdx === idx) return;                                    
+                if (dx < 0 && idx < TAB_ORDER.length - 1) nextIdx = idx + 1;
+                else if (dx > 0 && idx > 0) nextIdx = idx - 1;
+                if (nextIdx === idx) return;
 
-                lockUntil = now + 400;            
+                lockUntil = now + 400;
                 n.setTab(TAB_ORDER[nextIdx]);
             };
 
@@ -123,7 +123,6 @@
     };
 
     const formatDate = (iso) => (iso ? new Date(iso).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) : '');
-    const pairs = (n) => (n % 10 === 1 && n % 100 !== 11 ? 'пара' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 'пары' : 'пар');
 
     const openManager = () => {
         const link = 'https://t.me/' + cfg.managerUsername;
@@ -211,7 +210,7 @@
 
         return html`<section className="page">
       
-      <!-- ЭКРАН 1: ПРОМО-СТРАНИЦА (Показывается, пока showCatalog === false) -->
+      <!-- ЭКРАН 1: ПРОМО-СТРАНИЦА -->
       ${!showCatalog && html`
         <div className="hero">
           <span className="eyebrow">THE BEST SHOP</span>
@@ -231,7 +230,7 @@
         </div>
       `}
 
-      <!-- ЭКРАН 2: САМ КАТАЛОГ (Появляется только после нажатия на кнопку) -->
+      <!-- ЭКРАН 2: КАТАЛОГ -->
       ${showCatalog && html`
         <div ref=${gridTop} className="toolbar" style=${{ marginTop: '10px' }}>
           <${CurrencySwitch} />
@@ -442,7 +441,9 @@
         const delivery = cfg.deliveryMethods.find((d) => d.id === form.delivery);
         const orderCurrency = currency === 'RUB' ? 'RUB' : 'BYN';
         const orderTotal = orderCurrency === 'RUB' ? basketTotals.rub : basketTotals.byn;
-        const bonuses = form.useBonuses && user ? Math.min(user.bonusBalance, orderTotal) : 0;
+
+        const maxAllowedBonuses = orderTotal * ((cfg.maxBonusSpendPercent || 30) / 100);
+        const bonuses = form.useBonuses && user ? Math.min(user.bonusBalance, maxAllowedBonuses) : 0;
         const payable = orderTotal - bonuses;
 
         const submit = async () => {
@@ -452,7 +453,7 @@
             setSubmitting(true);
             try {
                 const result = await checkout({ ...form, bonuses });
-                setDone(result || true); 
+                setDone(result || true);
             } catch (e) {
                 toast(e.message);
             } finally {
@@ -509,10 +510,12 @@
             </div>
           </div>
           <label className="field"><span>Комментарий</span><textarea rows="2" value=${form.comment} onInput=${set('comment')}></textarea></label>
+          
+          <!-- ИСПРАВЛЕНО: Показываем реальное количество бонусов, которое применится -->
           ${user && user.bonusBalance > 0 &&
                 html`<label className="check">
             <input type="checkbox" checked=${form.useBonuses} onChange=${(e) => setForm((f) => ({ ...f, useBonuses: e.target.checked }))} />
-            <span>Списать бонусы (доступно ${money.format(user.bonusBalance, orderCurrency).replace(/ (Br|₽)$/, '')})</span>
+            <span>Списать бонусы (доступно ${money.format(user.bonusBalance, orderCurrency).replace(/ (Br|₽)$/, '')}, применится ${money.format(bonuses, orderCurrency).replace(/ (Br|₽)$/, '')})</span>
           </label>`}
         </div>
         <div className="summary">
