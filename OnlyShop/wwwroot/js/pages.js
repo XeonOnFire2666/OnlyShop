@@ -434,12 +434,20 @@
         };
 
         if (done) {
+            const isCardTransfer = form.payment === 'CardTransfer';
+            const orderId = typeof done === 'object' ? done.id : (typeof done === 'string' ? done : null);
+            const payLink = `https://t.me/${cfg.botUsername}?start=pay_${orderId}`;
+
             return html`<section className="page">
         <${Empty}
           icon="check"
-          title=${done === true ? 'Заказ оформлен' : 'Заказ №' + String(done).padStart(6, '0') + ' оформлен'}
-          text="Менеджер получил заказ и скоро свяжется с вами в Telegram."
-          action=${html`<button className="btn-outline" onClick=${() => { setDone(null); nav.setTab('profile'); }}>Смотреть заказы</button>`}
+          title=${done === true ? 'Заказ оформлен' : 'Заказ оформлен'}
+          text=${isCardTransfer
+                    ? "Пожалуйста, переведите сумму на карту и отправьте скриншот чека нашему боту."
+                    : "Менеджер получил заказ и скоро свяжется с вами в Telegram."}
+          action=${isCardTransfer
+                    ? html`<a href=${payLink} className="btn-outline" style="text-decoration:none; margin-top:16px; display:inline-flex;">📸 Отправить чек в бот</a>`
+                    : html`<button className="btn-outline" onClick=${() => { setDone(null); nav.setTab('profile'); }}>Смотреть заказы</button>`}
         />
       </section>`;
         }
