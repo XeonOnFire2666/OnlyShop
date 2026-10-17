@@ -267,11 +267,11 @@ p {
 }
 
 .hero-title {
-    font-family: var(--font-display);
-    font-weight: 200;
+    font-family: var(--font-serif);
+    font-weight: 700;
+    text-transform: none;
     font-size: clamp(40px, 12.5vw, 62px);
-    line-height: 1.05;
-    text-transform: uppercase;
+    line-height: 1.1;
     white-space: nowrap;
 }
 
@@ -280,9 +280,11 @@ p {
     }
 
 .hero-photo {
+    position: relative;      
     margin: 14px -20px 0;
     aspect-ratio: 4 / 3;
     overflow: hidden;
+    background: var(--bg);         
 }
 
     .hero-photo img {
@@ -290,6 +292,21 @@ p {
         height: 100%;
         object-fit: cover;
         cursor: pointer;
+    }
+
+    .hero-photo::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 35%;     
+        background: linear-gradient(to bottom, transparent 0%, var(--bg) 100%);
+        pointer-events: none;         
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
+        mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
     }
 
 .btn-black {

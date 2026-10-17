@@ -209,8 +209,8 @@
         return html`<section className="page">
       ${showHero &&
             html`<div className="hero">
-        <span className="eyebrow">New drop</span>
-        <h1 className="hero-title"><b>Твой</b> новый ход</h1>
+        <span className="eyebrow">The Best Shop</span>
+        <h1 className="hero-title"><b>Лучший</b> шоп</h1>
         <div className="hero-photo"><img src=${heroProduct.photos[0]} alt=${heroProduct.name} onClick=${() => nav.openProduct(heroProduct.id)} /></div>
         <button className="btn-black glass-dark" onClick=${() => gridTop.current && gridTop.current.scrollIntoView({ behavior: 'smooth' })}>
           Перейти в каталог<${Icon} name="arrow" size=${20} />
