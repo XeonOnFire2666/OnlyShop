@@ -146,10 +146,23 @@
             size: String(v.size),
             stock: pick(v, 'stockQuantity', 'stock', 'quantity') ?? (v.isAvailable ? 1 : 0)
         }));
+
+        if (variants.length === 0 && p.availableSizes) {
+            p.availableSizes.forEach((size, i) => {
+                variants.push({
+                    id: `temp-${i}`,
+                    size: String(size),
+                    stock: 1
+                });
+            });
+        }
+
         const price = p.price || {};
         const isPresale = pick(p, 'isPresale') ?? isPresaleValue(p.availability);
 
-        const photos = (p.photoUrls || p.photos || [])
+        const rawPhotos = p.photoUrls || p.photos || (p.coverUrl ? [p.coverUrl] : []);
+
+        const photos = rawPhotos
             .map((x) =>
                 typeof x === 'string'
                     ? { path: x, order: 0 }
