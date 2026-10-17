@@ -7,4 +7,4 @@ public interface IFileStorage
     Task<string> SaveAsync(FileUpload file, string folder, CancellationToken ct = default);
     Task DeleteAsync(string path, CancellationToken ct = default);
     string GetPublicUrl(string path);
-}
+}   

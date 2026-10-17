@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Amazon.S3;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using OnlyShop.Application.Abstractions.Infrastructure;
 using OnlyShop.Application.Abstractions.Persistence;
 using OnlyShop.Infrastructure.FileStorage;
@@ -33,8 +35,27 @@ public static class DependencyInjection
         services.AddScoped<IOrderRepository, OrderRepository>();
 
         services.Configure<FileStorageOptions>(configuration.GetSection(FileStorageOptions.SectionName));
-        services.AddScoped<IFileStorage, LocalFileStorage>();
 
+        services.AddSingleton<IAmazonS3>(sp =>
+        {
+            var storageOptions = sp.GetRequiredService<IOptions<FileStorageOptions>>().Value;
+
+            var config = new AmazonS3Config
+            {
+                ServiceURL = storageOptions.S3Endpoint,
+                ForcePathStyle = true,     
+                AuthenticationRegion = string.IsNullOrWhiteSpace(storageOptions.S3Region)
+                    ? "eu-central-1"
+                    : storageOptions.S3Region
+            };
+
+            return new AmazonS3Client(
+                storageOptions.S3AccessKey,
+                storageOptions.S3SecretKey,
+                config);
+        });
+
+        services.AddScoped<IFileStorage, S3FileStorage>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
 
         services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
