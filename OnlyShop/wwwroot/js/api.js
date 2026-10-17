@@ -144,12 +144,12 @@
         const variants = (p.variants || []).map((v) => ({
             id: v.id,
             size: String(v.size),
-            stock: pick(v, 'stockQuantity', 'stock', 'quantity') ?? 0
+            stock: pick(v, 'stockQuantity', 'stock', 'quantity') ?? (v.isAvailable ? 1 : 0)
         }));
         const price = p.price || {};
         const isPresale = pick(p, 'isPresale') ?? isPresaleValue(p.availability);
 
-        const photos = (p.photos || [])
+        const photos = (p.photoUrls || p.photos || [])
             .map((x) =>
                 typeof x === 'string'
                     ? { path: x, order: 0 }
