@@ -280,9 +280,13 @@
 
         let stockText = '';
         if (product && variant) {
-            if (product.isPresale) stockText = 'Предзаказ до ' + formatDate(product.presaleClosesAt);
-            else if (variant.stock > 0) stockText = 'В наличии: ' + variant.stock + ' ' + pairs(variant.stock);
-            else stockText = 'Нет в наличии';
+            if (product.isPresale) {
+                stockText = 'Предзаказ до ' + formatDate(product.presaleClosesAt);
+            } else if (variant.stock > 0) {
+                stockText = 'В наличии: ' + variant.stock + ' ' + pairs(variant.stock);
+            } else {
+                stockText = 'Нет в наличии';
+            }
         }
 
         return html`<div className="product-sheet">
