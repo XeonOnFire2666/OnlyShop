@@ -3,7 +3,7 @@ window.App = window.App || {};
 window.APP_CONFIG = {
     apiBase: 'https://onlyshop-rjf2.onrender.com',
     photoBase: '/media/',
-    managerUsername: 'aarabica666',
+    managerUsername: 'arabicaa666',
     botUsername: 'onlyshop00_bot',
     usdRate: 3.2,
     maxBonusSpendPercent: 30,
