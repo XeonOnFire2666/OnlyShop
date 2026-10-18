@@ -428,7 +428,6 @@ function ProductDetailModal({ id, categories, onClose, onChanged }) {
                         {tab === "details" && (
                             <DetailsTab
                                 product={product}
-                                categories={categories}
                                 busy={busy}
                                 onSave={(payload) =>
                                     run(() => productsApi.updateDetails(id, payload), "Сохранено")
@@ -675,6 +674,32 @@ function VariantsTab({ product, busy, onAdd, onAdjust }) {
 function PhotosTab({ product, busy, onUpload }) {
     const fileRef = useRef(null);
 
+    useEffect(() => {
+        function handlePaste(e) {
+            const items = e.clipboardData?.items;
+            if (!items) return;
+
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf("image") !== -1) {
+                    e.preventDefault();         
+
+                    const blob = items[i].getAsFile();
+                    if (blob) {
+                        const fileName = `pasted-image-${Date.now()}.png`;
+                        const file = new File([blob], fileName, { type: blob.type || "image/png" });
+                        onUpload(file);
+                    }
+                    break;
+                }
+            }
+        }
+
+        window.addEventListener("paste", handlePaste);
+        return () => {
+            window.removeEventListener("paste", handlePaste);
+        };
+    }, [onUpload]);
+
     return (
         <div className="pform">
             {(product.photos || []).length === 0 ? (
@@ -700,15 +725,19 @@ function PhotosTab({ product, busy, onUpload }) {
                     e.target.value = "";
                 }}
             />
-            <div className="pform__actions">
+
+            <div className="pform__actions" style={{ flexDirection: "column", gap: "10px", alignItems: "center" }}>
                 <Button
                     type="button"
                     variant="subtle"
                     loading={busy}
                     onClick={() => fileRef.current?.click()}
                 >
-                    Загрузить фото
+                    Выбрать файл на устройстве
                 </Button>
+                <span className="pform__hint" style={{ marginTop: 0 }}>
+                    или нажмите <kbd style={{ background: "var(--ink-500)", padding: "2px 6px", borderRadius: "4px", fontSize: "0.7rem" }}>Ctrl + V</kbd> (Cmd + V), чтобы вставить фото из буфера
+                </span>
             </div>
         </div>
     );
