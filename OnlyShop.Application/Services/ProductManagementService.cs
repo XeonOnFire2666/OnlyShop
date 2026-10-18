@@ -117,10 +117,14 @@ internal sealed class ProductManagementService(
     public async Task<AdminProductDto> AddVariantAsync(Guid staffId, Guid productId, VariantInput request, CancellationToken ct = default)
     {
         var product = await LoadAsync(productId, ct);
+
         product.AddVariant(request.Size, request.StockQuantity, staffId);
+
+        var newVariant = product.Variants.Last();
+        uow.Add(newVariant);
+
         return await SaveAsync(product, ct);
     }
-
     public async Task<AdminProductDto> AdjustStockAsync(Guid staffId, Guid productId, Guid variantId, int delta, CancellationToken ct = default)
     {
         var product = await LoadAsync(productId, ct);
