@@ -1,9 +1,4 @@
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/title-dark.svg">
-    <img src="assets/title-light.svg" alt="OnlyShop" width="620">
-  </picture>
-</p>
+<h1 align="center">OnlyShop</h1>
 
 <hr>
 
