@@ -1,6 +1,5 @@
 <h1 align="center">OnlyShop</h1>
 
-<hr>
 
 <p align="center">
   <img src="https://img.shields.io/badge/C%23-F08CB4?style=flat-square&logo=csharp&logoColor=1a1a1a" alt="C#">
