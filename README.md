@@ -1,4 +1,30 @@
-# OnlyShop — a clothing store inside Telegram
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/title-dark.svg">
+    <img src="assets/title-light.svg" alt="OnlyShop" width="620">
+  </picture>
+</p>
+
+<hr>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/C%23-F08CB4?style=flat-square&logo=csharp&logoColor=1a1a1a" alt="C#">
+  <img src="https://img.shields.io/badge/.NET_10-F08CB4?style=flat-square&logo=dotnet&logoColor=1a1a1a" alt=".NET 10">
+  <img src="https://img.shields.io/badge/ASP.NET_Core-F08CB4?style=flat-square&logo=dotnet&logoColor=1a1a1a" alt="ASP.NET Core">
+  <img src="https://img.shields.io/badge/Entity_Framework_Core-F08CB4?style=flat-square&logo=dotnet&logoColor=1a1a1a" alt="Entity Framework Core">
+  <img src="https://img.shields.io/badge/PostgreSQL-F08CB4?style=flat-square&logo=postgresql&logoColor=1a1a1a" alt="PostgreSQL">
+  <img src="https://img.shields.io/badge/React-F08CB4?style=flat-square&logo=react&logoColor=1a1a1a" alt="React">
+  <img src="https://img.shields.io/badge/React_Router-F08CB4?style=flat-square&logo=reactrouter&logoColor=1a1a1a" alt="React Router">
+  <img src="https://img.shields.io/badge/Vite-F08CB4?style=flat-square&logo=vite&logoColor=1a1a1a" alt="Vite">
+  <img src="https://img.shields.io/badge/JavaScript-F08CB4?style=flat-square&logo=javascript&logoColor=1a1a1a" alt="JavaScript">
+  <img src="https://img.shields.io/badge/Telegram_Mini_Apps-F08CB4?style=flat-square&logo=telegram&logoColor=1a1a1a" alt="Telegram Mini Apps">
+  <img src="https://img.shields.io/badge/Telegram_Bot-F08CB4?style=flat-square&logo=telegram&logoColor=1a1a1a" alt="Telegram Bot">
+  <img src="https://img.shields.io/badge/JWT-F08CB4?style=flat-square&logo=jsonwebtokens&logoColor=1a1a1a" alt="JWT">
+  <img src="https://img.shields.io/badge/S3_Storage-F08CB4?style=flat-square&logo=amazons3&logoColor=1a1a1a" alt="S3 Storage">
+  <img src="https://img.shields.io/badge/Docker-F08CB4?style=flat-square&logo=docker&logoColor=1a1a1a" alt="Docker">
+</p>
+
+<p align="center"><b>A clothing store inside Telegram</b></p>
 
 **🌐 Language:** **English** · [Русский](README.ru.md)
 
