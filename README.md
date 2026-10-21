@@ -20,7 +20,9 @@
 
 <p align="center"><b>A clothing store inside Telegram</b></p>
 
-<img height="480" alt="-2147483648_-211897" src="https://github.com/user-attachments/assets/b6c487c3-8843-459b-b6d6-d629ffb36c6b" />
+<p align="center">
+  <img height="480" alt="-2147483648_-211897" src="https://github.com/user-attachments/assets/b6c487c3-8843-459b-b6d6-d629ffb36c6b" />
+</p>
 
 **🌐 Language:** **English** · [Русский](README.ru.md)
 
