@@ -107,6 +107,8 @@ Allowed transitions are enforced in the domain model (`Order.CanTransitionTo`); 
 - Receives payment screenshots and confirms the receipt in one click
 - Runs on a webhook
 
+<img height="700" alt="image" src="https://github.com/user-attachments/assets/a8ad998b-6b52-4a1a-8fd4-3d7b06ff3413" />
+
 ---
 
 ## Tech stack
