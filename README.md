@@ -19,7 +19,7 @@
 </p>
 
 <p align="center"><b>A clothing store inside Telegram</b></p>
-
+<img width="676" height="1280" alt="-2147483648_-211897" src="https://github.com/user-attachments/assets/b6c487c3-8843-459b-b6d6-d629ffb36c6b" />
 **🌐 Language:** **English** · [Русский](README.ru.md)
 
 > **Status:** portfolio demo. It has not been launched commercially — it is a working solution to a real small-business problem, built as a complete product.
